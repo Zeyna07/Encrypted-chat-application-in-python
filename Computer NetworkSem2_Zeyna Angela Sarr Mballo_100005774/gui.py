@@ -1,17 +1,15 @@
 import tkinter as tk
 
-# module-level helpers (will be wired when ChatGUI is instantiated)
 window = None
 chat_display = None
 local_username = None
 
 def set_local_username(name: str):
-    """Set the local client's username so GUI can show 'You' locally."""
+    """Set the local client's username so GUI can show 'You'."""
     global local_username
     local_username = name
 
 def display_message(msg: str):
-    """Module-level helper so client code can call gui.display_message(...)"""
     global chat_display, window, local_username
     if chat_display is None or window is None:
         return
@@ -24,7 +22,7 @@ def display_message(msg: str):
         # fallback if format differs
         display = display.replace(f"{local_username}:", "You:")
 
-    # ensure thread-safe UI update
+    # UI update
     window.after(0, lambda: (chat_display.config(state="normal"),
                              chat_display.insert(tk.END, display + "\n"),
                              chat_display.config(state="disabled"),
@@ -40,7 +38,7 @@ class ChatGUI:
         window.geometry("420x540")
         window.configure(bg="#061f3d")
 
-        # prettier chat display with blue font
+
         chat_display = tk.Text(window, state="disabled", wrap="word",
                                fg="#000000", bg="#f7fbff",
                                font=("Segoe UI", 10), padx=8, pady=8, bd=0)
@@ -57,7 +55,6 @@ class ChatGUI:
                                      font=("Segoe UI", 9, "bold"), padx=12, pady=6)
         self.send_button.pack(side="right")
 
-        # store references for module-level helpers
         self.window = window
         self.chat_display = chat_display
 
@@ -66,8 +63,7 @@ class ChatGUI:
         if not message or not self.send_callback:
             return
 
-        # Call external send callback; if it returns the formatted message string,
-        # display that (GUI owns display logic).
+        # Call external send callback; see if it returns the formatted message string (client.py)
         formatted = None
         try:
             formatted = self.send_callback(message)
@@ -80,7 +76,7 @@ class ChatGUI:
         if isinstance(formatted, str):
             display_message(formatted)
         else:
-            # fallback display (no timestamp)
+            # fallback display with no timestamp
             display_message(f"You: {message}")
 
     def run(self):
