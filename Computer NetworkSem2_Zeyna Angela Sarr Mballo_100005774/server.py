@@ -4,13 +4,11 @@ import rsa
 from cryptography.fernet import Fernet
 
 
-# Only one keypair needed for the server
 server_public_key, server_private_key = rsa.newkeys(1024)
 
-IP = "10.0.102.96"   # or "127.0.0.1" if testing locally
+IP = "10.0.102.96"  
 PORT = 5000
 
-# socket -> {"public_key": rsa.PublicKey, "fernet": Fernet}
 clients = {}
 
 def recv_exact(sock: socket.socket, n: int) -> bytes | None:
