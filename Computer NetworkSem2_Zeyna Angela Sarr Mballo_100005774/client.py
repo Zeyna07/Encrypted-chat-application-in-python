@@ -2,7 +2,6 @@ import socket
 import threading
 import rsa
 import datetime
-import time
 from cryptography.fernet import Fernet
 from gui import ChatGUI
 import gui
@@ -16,7 +15,7 @@ IP = "10.0.102.96"
 PORT = 5000
 
 username = input("Choose a username: ")
-# let GUI know the local username so it can show "You"
+# this is why it says "you" and doesn't repeat my name 2x
 gui.set_local_username(username)
 
 def recv_exact(sock, n):
@@ -38,7 +37,7 @@ def receive_messages(sock):
     server_public_key = rsa.PublicKey.load_pkcs1(key_data)
     print("Received server's public key.")
 
-    #Send our public key
+    #Send client public key
     sock.send(client_public_key.save_pkcs1())
 
     #Generate AES key and send it encrypted with server's RSA key
@@ -80,7 +79,7 @@ def send_encrypted(sock, msg):
     length_key = len(ciphertext).to_bytes(4, "big")
     sock.send(length_key + ciphertext)
 
-    # return the formatted message so GUI can display it (GUI handles display)
+    # return the formatted message so the GUI can display it
     return full_msg
 
 
