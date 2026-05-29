@@ -6,7 +6,7 @@ from cryptography.fernet import Fernet
 
 server_public_key, server_private_key = rsa.newkeys(1024)
 
-IP = "10.0.102.96"  
+IP = "127.0.0.1"  
 PORT = 5000
 
 clients = {}
