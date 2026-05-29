@@ -11,7 +11,7 @@ client_public_key, client_private_key = rsa.newkeys(1024)
 server_public_key = None
 fernet = None
 
-IP = "10.0.102.96"
+IP = "127.0.0.1"
 PORT = 5000
 
 username = input("Choose a username: ")
